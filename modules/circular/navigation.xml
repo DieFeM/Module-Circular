@@ -1,0 +1,3 @@
+<navigation>
+	<page key="default" file="circular.php" access="admin" />
+</navigation>

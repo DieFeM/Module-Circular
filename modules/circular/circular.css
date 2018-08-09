@@ -1,0 +1,33 @@
+table#circular{
+	width:100%;
+}
+
+table#circular>tbody>tr>td>input[type="text"], 
+table#circular>tbody>tr>td>select,
+table#circular>tbody>tr>td>textarea{
+	width:100%;
+}
+
+#circular > tbody > tr:nth-child(1) > td:nth-child(1),
+#circular > tbody > tr:nth-child(3) > td:nth-child(1){
+	width:90px !important;
+	word-wrap:break-word;
+}
+
+.ql-editor>h0, .ql-editor>h1, .ql-editor>h1, 
+.ql-editor>h2, .ql-editor>h3, .ql-editor>h4, 
+.ql-editor>h5, .ql-editor>h6, .ql-editor>legend{
+	all: initial;
+    all: unset;
+}
+
+.ql-toolbar{
+	background:white;
+}
+
+#editor{
+	height:400px;
+	background:white;
+	color:black;
+	text-shadow:none;
+}
