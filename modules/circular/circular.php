@@ -21,25 +21,19 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
  */
-
+include 'modules/circular/functions.php';
 function exec_ogp_module()
 {
 	global $db;
 	if(isset($_POST['send_circular']))
 	{
-		print_r($_POST['admins']);
-		print_r($_POST['users']);
-		print_r($_POST['groups']);
-		print_r($_POST['subusers_of_users']);
-		echo $_POST['subject'];
-		echo $_POST['message'];
+		send_circular($_POST);
 		return;
 	}
 	
 	echo '<link rel="stylesheet" href="css/quill/quill.snow.css">'."\n".
 		 '<script type="text/javascript" src="js/quill/quill.js"></script>'."\n".
 		 '<script type="text/javascript" src="js/modules/circular.js"></script>';
-	
 	$subusers_installed = $db->isModuleInstalled('subusers');
 	echo "<h2>".get_lang('Circular')."</h2>";
 		
@@ -82,7 +76,8 @@ function exec_ogp_module()
 	{
 		foreach($groups as $group)
 		{
-			echo '<option value="'.$group['group_id'].'">'.$group['group_name'].'</option>';
+			if($db->listUsersInGroup($group['group_id']))
+				echo '<option value="'.$group['group_id'].'">'.$group['group_name'].'</option>';
 		}
 	}
 	echo '</select></td>'."\n";

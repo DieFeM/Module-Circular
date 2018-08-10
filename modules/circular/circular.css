@@ -31,3 +31,15 @@ table#circular>tbody>tr>td>textarea{
 	color:black;
 	text-shadow:none;
 }
+
+.status_0{
+	content:url(../../images/online.png);
+}
+
+.status_1{
+	content:url(../../images/offline.png);
+}
+
+table#circular_list > tbody > tr > td:nth-child(1){
+	width:10px;
+}

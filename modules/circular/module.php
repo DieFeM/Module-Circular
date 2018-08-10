@@ -28,7 +28,25 @@ $db_version = 0;
 $module_required = false;
 $module_menus = array(
 					array(
+						'subpage'	=>	'',
 						'name'		=>	'Circular',
 						'group'		=>	'admin',
 					)
 				);
+				
+$install_queries[0] = array(
+	"DROP TABLE IF EXISTS `".OGP_DB_PREFIX."circular`",
+	"CREATE TABLE IF NOT EXISTS `".OGP_DB_PREFIX."circular` (
+		`circular_id` int NOT NULL AUTO_INCREMENT,
+		`subject` varchar(64) NOT NULL,
+		`message` TEXT NOT NULL,
+		PRIMARY KEY (`circular_id`)
+	);",
+	"DROP TABLE IF EXISTS `".OGP_DB_PREFIX."circular_recipients`",
+	"CREATE TABLE IF NOT EXISTS `".OGP_DB_PREFIX."circular_recipients` (
+	`user_id` int NOT NULL,
+	`circular_id` int NOT NULL,
+	`status` tinyint NOT NULL,
+	PRIMARY KEY (`user_id`, `circular_id`)
+	);"
+);
