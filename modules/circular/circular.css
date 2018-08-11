@@ -43,3 +43,16 @@ table#circular>tbody>tr>td>textarea{
 table#circular_list > tbody > tr > td:nth-child(1){
 	width:10px;
 }
+
+table#circular_admin_list>thead>tr>th{
+	background:black;
+	color:white;
+}
+
+table#circular_admin_list{
+	border:1px solid black;
+}
+
+table#circular_admin_list>tbody>tr>td{
+	border:1px solid gray;
+}

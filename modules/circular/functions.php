@@ -21,6 +21,48 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
  */
+function get_usernames_not_read_circular($circular_id)
+{
+	global $db;
+	$circular_id = $db->real_escape_string($circular_id);
+	$query = "SELECT user_id ".
+			 "FROM `OGP_DB_PREFIXcircular_recipients` ".
+			 "WHERE `circular_id` = '$circular_id' ".
+			 "AND `status` = '0'";
+	$users = $db->resultQuery($query);
+	if($users)
+	{
+		$user_names = array();
+		foreach($users as $user)
+		{
+			$user_info = $db->getUserById($user['user_id']);
+			$user_names[] = $user_info['users_login'];
+		}
+		return implode(', ', $user_names);
+	}
+	return false;
+} 
+
+function remove_circular($circular_id, $admin = false)
+{
+	global $db;
+	$circular_id = $db->real_escape_string($circular_id);
+	
+	if($admin)
+	{
+		$db->query("DELETE FROM `OGP_DB_PREFIXcircular_recipients` ".
+				   "WHERE `circular_id` = '$circular_id'");
+		$db->query("DELETE FROM `OGP_DB_PREFIXcircular` ".
+				   "WHERE `circular_id` = '$circular_id'");
+	}
+	else
+	{
+		$db->query("DELETE FROM `OGP_DB_PREFIXcircular_recipients` ".
+				   "WHERE `circular_id` = '$circular_id' ".
+				   "AND `user_id` = '$_SESSION[user_id]'");
+	}
+}
+
 function set_circular_readed($circular_id)
 {
 	global $db;
@@ -31,14 +73,18 @@ function set_circular_readed($circular_id)
 			   "AND `user_id` = '$_SESSION[user_id]'");
 }
 
-function get_circulars()
+function get_circulars($all = false)
 {
 	global $db;
-	$circulars = $db->resultQuery("SELECT * ".
-								  "FROM `OGP_DB_PREFIXcircular_recipients` ".
-								  "NATURAL JOIN `OGP_DB_PREFIXcircular` ".
-								  "WHERE user_id = $_SESSION[user_id]");
-	return $circulars;
+	if($all)
+		$query = "SELECT * FROM `OGP_DB_PREFIXcircular`";
+	else
+		$query = "SELECT * ".
+				 "FROM `OGP_DB_PREFIXcircular_recipients` ".
+				 "NATURAL JOIN `OGP_DB_PREFIXcircular` ".
+				 "WHERE user_id = $_SESSION[user_id]";
+	
+	return $db->resultQuery($query);
 }
  
 function send_to_user($user_id, $circular_id)

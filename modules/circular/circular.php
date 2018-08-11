@@ -31,9 +31,59 @@ function exec_ogp_module()
 		return;
 	}
 	
+	if(isset($_GET['get_circulars']))
+	{
+		$circulars = get_circulars(true);
+		header('Content-Type: application/json');
+		echo json_encode($circulars);
+		return;
+	}
+	
+	if(isset($_POST['remove_circulars']))
+	{
+		if(isset($_POST['circulars_ids']) and is_array($_POST['circulars_ids']) and !empty($_POST['circulars_ids']))
+		{
+			foreach($_POST['circulars_ids'] as $circular_id)
+			{
+				remove_circular($circular_id, true);
+			}
+		}
+		return;
+	}
+	
 	echo '<link rel="stylesheet" href="css/quill/quill.snow.css">'."\n".
 		 '<script type="text/javascript" src="js/quill/quill.js"></script>'."\n".
 		 '<script type="text/javascript" src="js/modules/circular.js"></script>';
+	
+	if(isset($_GET['list']))
+	{
+		$circulars = get_circulars(true);
+		if($circulars)
+		{
+			rsort($circulars);
+			echo "<table id='circular_admin_list'><thead><tr>\n".
+				 "<th><input type=\"checkbox\" onclick=\"swap_all_checkboxes(this)\"></th>\n".
+				 "<th>".get_lang('subject')."</th>\n".
+				 "<th>".get_lang('users_not_read_circular')."</th></thead>\n";
+			
+			foreach($circulars as $key => $circular)
+			{
+				$users_not_readed = get_usernames_not_read_circular($circular['circular_id']);
+				$users_not_readed = $users_not_readed ? $users_not_readed: "";
+				echo '<tr><td><input type="checkbox" class="circular_checkbox" name="remove_circular[]" value="'.$circular['circular_id'].'"></td>'."\n".
+					 '<td><b>'.$circular['subject']."</b></td><td>$users_not_readed</td></tr>\n";
+			}
+			echo '<tr><td colspan=3><button onclick="remove_circulars()">'.get_lang('remove_selected_circulars')."</button></td></tr>\n".
+				 "</table>\n";
+		}
+		else
+		{
+			print_failure(get_lang('there_are_no_circulars'));
+		}
+		echo '<p><a href="?m=circular">&lt;&lt; '.get_lang('back')."</a></p>\n";
+		return;
+	}
+	
 	$subusers_installed = $db->isModuleInstalled('subusers');
 	echo "<h2>".get_lang('Circular')."</h2>";
 		

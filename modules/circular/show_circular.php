@@ -28,22 +28,22 @@ function exec_ogp_module()
 	if(isset($_GET['list']))
 	{
 		rsort($circulars);
-		echo "<table id='circular_list'>";
+		echo "<table id='admin_circular_list'>\n";
 		foreach($circulars as $key => $circular)
 		{
-			echo '<tr><td><i class="status_'.$circular['status'].'"></i></td><td><a href="?m=circular&p=show_circular&read_circular='.$circular['circular_id'].'">'.$circular['subject'].'</a></td></tr>';
+			echo '<tr><td><i class="status_'.$circular['status'].'"></i></td><td><a href="?m=circular&p=show_circular&read_circular='.$circular['circular_id'].'">'.$circular['subject']."</a></td></tr>\n";
 		}
-		echo "</table>";
+		echo "</table>\n";
 	}
 	elseif(isset($_GET['read_circular']) and is_numeric($_GET['read_circular']))
 	{
 		foreach($circulars as $circular)
 			if($circular['circular_id'] == $_GET['read_circular'])
 				break;
-		echo '<div id="circular_subject">'.$circular['subject'].'</div>'.
-			 '<br>'.
-			 '<div id="circular_message">'.$circular['message'].'</div>'.
-			 '<p><a href="?m=circular&p=show_circular&list">&lt;&lt; '.get_lang('back').'</a></p>';
+		echo '<div id="circular_subject">'.$circular['subject']."</div>\n".
+			 "<br>\n".
+			 '<div id="circular_message">'.$circular['message']."</div>\n".
+			 '<p><a href="?m=circular&p=show_circular&list">&lt;&lt; '.get_lang('back')."</a></p>\n";
 		if($circular['status'] == "0")
 			set_circular_readed($circular['circular_id']);
 	}
