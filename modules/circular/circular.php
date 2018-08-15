@@ -64,16 +64,17 @@ function exec_ogp_module()
 			echo "<table id='circular_admin_list'><thead><tr>\n".
 				 "<th><input type=\"checkbox\" onclick=\"swap_all_checkboxes(this)\"></th>\n".
 				 "<th>".get_lang('subject')."</th>\n".
-				 "<th>".get_lang('users_not_read_circular')."</th></thead>\n";
+				 "<th>".get_lang('users_not_read_circular')."</th>".
+				 "<th>".get_lang('date')."</th></thead>\n";
 			
 			foreach($circulars as $key => $circular)
 			{
 				$users_not_readed = get_usernames_not_read_circular($circular['circular_id']);
 				$users_not_readed = $users_not_readed ? $users_not_readed: "";
 				echo '<tr><td><input type="checkbox" class="circular_checkbox" name="remove_circular[]" value="'.$circular['circular_id'].'"></td>'."\n".
-					 '<td><b>'.$circular['subject']."</b></td><td>$users_not_readed</td></tr>\n";
+					 '<td><b>'.$circular['subject']."</b></td><td>$users_not_readed</td><td>".$circular['timestamp']."</td></tr>\n";
 			}
-			echo '<tr><td colspan=3><button onclick="remove_circulars()">'.get_lang('remove_selected_circulars')."</button></td></tr>\n".
+			echo '<tr><td colspan=4><button onclick="remove_circulars()">'.get_lang('remove_selected_circulars')."</button></td></tr>\n".
 				 "</table>\n";
 		}
 		else

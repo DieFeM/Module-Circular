@@ -38,8 +38,9 @@ $install_queries[0] = array(
 	"DROP TABLE IF EXISTS `".OGP_DB_PREFIX."circular`",
 	"CREATE TABLE IF NOT EXISTS `".OGP_DB_PREFIX."circular` (
 		`circular_id` int NOT NULL AUTO_INCREMENT,
-		`subject` varchar(64) NOT NULL,
+		`subject` TEXT NOT NULL,
 		`message` TEXT NOT NULL,
+		`timestamp` TIMESTAMP,
 		PRIMARY KEY (`circular_id`)
 	);",
 	"DROP TABLE IF EXISTS `".OGP_DB_PREFIX."circular_recipients`",
